@@ -251,8 +251,12 @@ if mini_budge:
         conveyor = Conveyor()
         conveyor.speed(19)
         conveyor.reverse()
-        time.sleep(time_step)
+        if qr_bbox_0 > 840:
+            time.sleep(2 * time_step)  # Sleep for 2 * time_step
+        elif qr_bbox_0 > 700:
+            time.sleep(time_step)  # Sleep for the default time_step
         conveyor.stop()
+
 
 
 
