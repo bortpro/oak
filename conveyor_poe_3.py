@@ -247,12 +247,12 @@ time_step = 0.25
 
 if mini_budge:
     qr_bbox_0 = eval_align.eval(my_id)
-        if qr_bbox_0 < 700:
-            conveyor = Conveyor()
-            conveyor.speed(19)
-            conveyor.reverse()
-            time.sleep(time_step)
-            conveyor.stop()
+    if qr_bbox_0 < 700:
+        conveyor = Conveyor()
+        conveyor.speed(19)
+        conveyor.reverse()
+        time.sleep(time_step)
+        conveyor.stop()
 
 
 # budge = False
