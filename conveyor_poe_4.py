@@ -238,6 +238,7 @@ my_id = "11-111-111"
 my_speed = 19
 qr_bbox_0 = move(my_id,my_speed,'forw',False)
 
+time.sleep(8)
 eval_loop_notimeout.finetune(my_id)
 
 # mini_budge = True
