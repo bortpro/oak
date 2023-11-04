@@ -11,14 +11,13 @@ def finetune(panel_id):
     DISPLAY = False # display camera image (set to none on RPi)
 
     FRAME_SIZE = (1440,1080)
-    FRAME_SIZE = (384,384)
     FOCUS_VALUE = 175 # 0-255, 0>inf, 150>30cm, 200>10cm, 255>8cm
     FPS = 30
 
     BLUR = False # apply blur to image before decoding
     BLUR_KERNEL = (7,7) # blur kernel size (width, height)
 
-    BBOX_EXPANSION_PERCENT = 100 # expand bounding box by percent before decoding
+    BBOX_EXPANSION_PERCENT = 200 # expand bounding box by percent before decoding
     DETECTION_THRESHOLD = 0.9 # minimum confidence threshold for detection
 
     USE_EXP_LIMIT_TUNING = False # use exposure limit tuning, will disable manual exposure
