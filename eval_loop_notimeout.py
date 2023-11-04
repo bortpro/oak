@@ -24,7 +24,7 @@ def finetune(panel_id):
     USE_EXP_LIMIT_TUNING = False # use exposure limit tuning, will disable manual exposure
     EXP_LIMIT = 8300 # exposure limit in us, either 8300 (default) or 500
 
-    MANUAL_EXPOSURE = False # set manual exposure
+    MANUAL_EXPOSURE = True # set manual exposure
     EXP_TIME = 1000 # sensor exposure time, range 1 to 33000
     SENS_ISO = 1600 # sesnor sensitivity, range 100 to 1600
 
@@ -160,7 +160,7 @@ def finetune(panel_id):
                 scanner = zbar.Scanner()
                 qr_bbox_0 = 9999
 
-                while True:
+                while qr_bbox_0 > 780:
                     frame = qCam.get().getCvFrame()
                     detections = qDet.get().detections
                     qr_bbox = [9999, 9999, 9999, 9999]
@@ -187,17 +187,21 @@ def finetune(panel_id):
                             print("Panel QR code")
                             qr_bbox = bbox
                             print("QR bbox: ",qr_bbox)
+                            qr_bbox_0 = qr_bbox[0]
+                            print("QR bbox [0]: ",qr_bbox_0)
                             conveyor = Conveyor()
                             conveyor.speed(19)
 
                             if qr_bbox_0 > 840:
                                 conveyor.reverse()
-                                time.sleep(2*0.25)
+                                time.sleep(0.25)
                                 conveyor.stop()
+                                time.sleep(2)
                             elif qr_bbox_0 > 700:
                                 conveyor.reverse()
                                 time.sleep(0.25)
                                 conveyor.stop()
+                                time.sleep(2)
                             if qr_bbox_0 < 780:
                                 return
                         c.putText(frame, text, (bbox[0] + 10, bbox[1] + 40))
@@ -222,6 +226,6 @@ def finetune(panel_id):
         except RuntimeError as e:
             print(f"Error: {e}")
             print("Camera not detected. Retrying in 5 seconds...")
-            time.sleep(5) # wait for 3 s before retry
+            time.sleep(5) # wait for 5 s before retry
 
 #finetune(panel_id)
