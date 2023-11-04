@@ -227,7 +227,8 @@ def move(panel_id,my_speed,direction, corr_40):
                         if cv2.waitKey(1) == ord('q'):
                             break
 
-                    if qr_bbox[0] > 1
+                    print("QR Bbox Detected?: ",qr_bbox[0])
+                    if qr_bbox[0] > 1:
                         while qr_bbox_0 > 780:
                             frame = qCam.get().getCvFrame()
                             detections = qDet.get().detections
