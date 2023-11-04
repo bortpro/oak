@@ -41,7 +41,7 @@ def move(panel_id, my_speed, direction, corr_40):
 
     MANUAL_EXPOSURE = True  # set manual exposure
     EXP_TIME = 1000  # sensor exposure time, range 1 to 33000
-    SENS_ISO = 1600  # sesnor sensitivity, range 100 to 1600
+    SENS_ISO = 1600  # sensor sensitivity, range 100 to 1600
 
     # Create pipeline
     pipeline = dai.Pipeline()
@@ -119,7 +119,7 @@ def move(panel_id, my_speed, direction, corr_40):
 
                 def decode(frame, bbox, scanner):
                     # crop frame to bbox area
-                    img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]
+                    img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
 
                     # zbar requires grayscale images
                     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -155,7 +155,7 @@ def move(panel_id, my_speed, direction, corr_40):
                     return (np.clip(np.array(bbox), 0, 1) * normVals).astype(int)
 
                 def clamp(num, v0, v1):
-                    return max(v0, min(num, v1)
+                    return max(v0, min(num, v1))
 
                 qCam = device.getOutputQueue("camera", maxSize=4, blocking=False)
                 qDet = device.getOutputQueue("nn", maxSize=4, blocking=False)
