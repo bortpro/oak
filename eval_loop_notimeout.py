@@ -158,9 +158,9 @@ def finetune(panel_id):
         
                 c = TextHelper()
                 scanner = zbar.Scanner()
-                qr_bbox_0 = 9999
+                #qr_bbox_0 = 9999
 
-                while qr_bbox_0 > 780:
+                while True:
                     frame = qCam.get().getCvFrame()
                     detections = qDet.get().detections
                     qr_bbox = [9999, 9999, 9999, 9999]
@@ -195,6 +195,8 @@ def finetune(panel_id):
                             elif qr_bbox_0 > 700:
                                 time.sleep(0.25)
                             conveyor.stop()
+                            elif qr_bbox_0 < 780:
+                                return
                         c.putText(frame, text, (bbox[0] + 10, bbox[1] + 40))
         
                         # if qr_bbox[0]-500 < stop_bbox[0] < qr_bbox[0]+500:
@@ -216,7 +218,7 @@ def finetune(panel_id):
                             break
         except RuntimeError as e:
             print(f"Error: {e}")
-            print("Camera not detected. Retrying in 3 seconds...")
-            time.sleep(3) # wait for 3 s before retry
+            print("Camera not detected. Retrying in 5 seconds...")
+            time.sleep(5) # wait for 3 s before retry
 
-finetune(panel_id)
+#finetune(panel_id)
