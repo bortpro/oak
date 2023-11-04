@@ -206,7 +206,6 @@ def move(panel_id,my_speed,direction, corr_40):
                             print("QR bbox: ",qr_bbox)
                             time.sleep(0.1)
                             conveyor.stop()
-                            device.close()
                             return qr_bbox[0]
                         c.putText(frame, text, (bbox[0] + 10, bbox[1] + 40))
         
@@ -227,62 +226,64 @@ def move(panel_id,my_speed,direction, corr_40):
         
                         if cv2.waitKey(1) == ord('q'):
                             break
-                    while qr_bbox_0 > 780:
-                        frame = qCam.get().getCvFrame()
-                        detections = qDet.get().detections
-                        qr_bbox = [9999, 9999, 9999, 9999]
-                        stop_bbox = [999,999,999,999]
-            
-                        qr_bbox_left_bound = 50
-                        qr_bbox_right_bound = 999
 
-            
-                        for det in detections:
-                            # expand and denormalize bbox
-                            expandDetection(det)
-                            bbox = frameNorm(frame, (det.xmin, det.ymin, det.xmax, det.ymax))
-            
-                            # decode QR image
-                            text = decode(frame, bbox, scanner)
-            
-                            if text == "STOP":
-                                print("Text = STOP")
-                                stop_bbox = bbox
-                                print("STOP bbox: ",stop_bbox)
-            
-                            elif text != None and len(text) > 5 and text == panel_id:
-                                print("Panel QR code")
-                                qr_bbox = bbox
-                                print("QR bbox: ",qr_bbox)
-                                qr_bbox_0 = qr_bbox[0]
-                                print("QR bbox [0]: ",qr_bbox_0)
-                                conveyor = Conveyor()
-                                conveyor.speed(19)
+                    if qr_bbox[0] > 1
+                        while qr_bbox_0 > 780:
+                            frame = qCam.get().getCvFrame()
+                            detections = qDet.get().detections
+                            qr_bbox = [9999, 9999, 9999, 9999]
+                            stop_bbox = [999,999,999,999]
+                
+                            qr_bbox_left_bound = 50
+                            qr_bbox_right_bound = 999
 
-                                if qr_bbox_0 > 840:
-                                    conveyor.reverse()
-                                    time.sleep(0.25)
-                                    conveyor.stop()
-                                    time.sleep(2)
-                                elif qr_bbox_0 > 700:
-                                    conveyor.reverse()
-                                    time.sleep(0.25)
-                                    conveyor.stop()
-                                    time.sleep(2)
-                                if qr_bbox_0 < 780:
-                                    return
-                            c.putText(frame, text, (bbox[0] + 10, bbox[1] + 40))
-            
-                            # if qr_bbox[0]-500 < stop_bbox[0] < qr_bbox[0]+500:
-                            #     print("ALIGNED")
-                            #     # conveyor.stop()
-                            #     # device.close()
-                            #     return
-                    
-                            # add bbox, confidence, and decoded text to image
-                            c.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]))
-                            c.putText(frame, f"{int(det.confidence * 100)}%", (bbox[0] + 10, bbox[1] + 30))
-                            c.putText(frame, text, (bbox[0] + 10, bbox[1] + 60))
+                
+                            for det in detections:
+                                # expand and denormalize bbox
+                                expandDetection(det)
+                                bbox = frameNorm(frame, (det.xmin, det.ymin, det.xmax, det.ymax))
+                
+                                # decode QR image
+                                text = decode(frame, bbox, scanner)
+                
+                                if text == "STOP":
+                                    print("Text = STOP")
+                                    stop_bbox = bbox
+                                    print("STOP bbox: ",stop_bbox)
+                
+                                elif text != None and len(text) > 5 and text == panel_id:
+                                    print("Panel QR code")
+                                    qr_bbox = bbox
+                                    print("QR bbox: ",qr_bbox)
+                                    qr_bbox_0 = qr_bbox[0]
+                                    print("QR bbox [0]: ",qr_bbox_0)
+                                    conveyor = Conveyor()
+                                    conveyor.speed(19)
+
+                                    if qr_bbox_0 > 840:
+                                        conveyor.reverse()
+                                        time.sleep(0.25)
+                                        conveyor.stop()
+                                        time.sleep(2)
+                                    elif qr_bbox_0 > 700:
+                                        conveyor.reverse()
+                                        time.sleep(0.25)
+                                        conveyor.stop()
+                                        time.sleep(2)
+                                    if qr_bbox_0 < 780:
+                                        return
+                                c.putText(frame, text, (bbox[0] + 10, bbox[1] + 40))
+                
+                                # if qr_bbox[0]-500 < stop_bbox[0] < qr_bbox[0]+500:
+                                #     print("ALIGNED")
+                                #     # conveyor.stop()
+                                #     # device.close()
+                                #     return
+                        
+                                # add bbox, confidence, and decoded text to image
+                                c.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]))
+                                c.putText(frame, f"{int(det.confidence * 100)}%", (bbox[0] + 10, bbox[1] + 30))
+                                c.putText(frame, text, (bbox[0] + 10, bbox[1] + 60))
 
 
         except RuntimeError as e:
