@@ -158,7 +158,7 @@ def finetune(panel_id):
         
                 c = TextHelper()
                 scanner = zbar.Scanner()
-                #qr_bbox_0 = 9999
+                qr_bbox_0 = 9999
 
                 while True:
                     frame = qCam.get().getCvFrame()
@@ -189,13 +189,16 @@ def finetune(panel_id):
                             print("QR bbox: ",qr_bbox)
                             conveyor = Conveyor()
                             conveyor.speed(19)
-                            conveyor.reverse()
+
                             if qr_bbox_0 > 840:
+                                conveyor.reverse()
                                 time.sleep(2*0.25)
+                                conveyor.stop()
                             elif qr_bbox_0 > 700:
+                                conveyor.reverse()
                                 time.sleep(0.25)
-                            conveyor.stop()
-                            elif qr_bbox_0 < 780:
+                                conveyor.stop()
+                            if qr_bbox_0 < 780:
                                 return
                         c.putText(frame, text, (bbox[0] + 10, bbox[1] + 40))
         
