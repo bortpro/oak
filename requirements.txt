@@ -1,0 +1,6 @@
+depthai==2.22.0.0
+numpy==1.21.6
+opencv-python-headless==4.8.1.78
+PyYAML==6.0.1
+requests==2.31.0
+urllib3==2.0.7
