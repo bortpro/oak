@@ -5,5 +5,6 @@ PyYAML==6.0.1
 requests==2.31.0
 urllib3==2.0.7
 
+# For RPi or Linux based systems, may need this to allow camera to communicate
 #echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | sudo tee /etc/udev/rules.d/80-movidius.rules
 #sudo udevadm control --reload-rules && sudo udevadm trigger
