@@ -3,12 +3,12 @@ import time
 import argparse
 from pathlib import Path
 
-# Device mxids
-dipro_s2_mxid = '18443010E157E40F00'  # OAK-D-S2 mxid
-dipro_sr = '19443010F156DF1200'       # OAK-SR mxid
+# Default Device mxids (you can change these or use custom mxids via command-line argument)
+default_oak_s2_mxid = '18443010E157E40F00'  # OAK-D-S2 mxid
+default_oak_sr_mxid = '19443010F156DF1200'  # OAK-SR mxid
 
 # Function to record video from the OAK-D-S2
-def record_oak_s2(mxid=dipro_s2_mxid, duration_seconds=5, output_dir='image_eval_data'):
+def record_oak_s2(mxid, duration_seconds=5, output_dir='image_eval_data'):
     # Create pipeline
     pipeline = dai.Pipeline()
 
@@ -55,19 +55,8 @@ def record_oak_s2(mxid=dipro_s2_mxid, duration_seconds=5, output_dir='image_eval
 
         print(f"Recording complete. Video saved as {filename}.")
 
-# Function to record video at intervals
-def record_oak_interval(interval_seconds=10, duration_seconds=5, total_duration_seconds=86400, mxid=dipro_s2_mxid, output_dir='image_eval_data'):
-    start_time = time.time()
-
-    while time.time() - start_time < total_duration_seconds:
-        # Call the record_oak function with mxid and output_dir
-        record_oak_s2(mxid=mxid, duration_seconds=duration_seconds, output_dir=output_dir)
-
-        # Wait for the specified interval before recording again
-        time.sleep(interval_seconds)
-
 # Function to record video from the OAK-SR
-def record_oak_sr(mxid=dipro_sr, duration_seconds=5, output_dir='image_eval_data'):
+def record_oak_sr(mxid, duration_seconds=5, output_dir='image_eval_data'):
     # Create pipeline
     pipeline = dai.Pipeline()
 
@@ -120,10 +109,14 @@ if __name__ == "__main__":
     parser.add_argument("--camera", choices=["oak_s2", "oak_sr"], required=True, help="Select the camera to record from.")
     parser.add_argument("--duration", type=int, default=5, help="Duration of the recording in seconds.")
     parser.add_argument("--output_dir", type=str, default='image_eval_data', help="Output directory for recorded videos.")
+    parser.add_argument("--mxid", type=str, help="Specify the mxid of the camera. If not provided, the default mxid will be used.")
 
     args = parser.parse_args()
 
+    # Determine which camera to record from and use either the provided mxid or the default one
     if args.camera == "oak_s2":
-        record_oak_s2(duration_seconds=args.duration, output_dir=args.output_dir)
+        mxid = args.mxid if args.mxid else default_oak_s2_mxid
+        record_oak_s2(mxid=mxid, duration_seconds=args.duration, output_dir=args.output_dir)
     elif args.camera == "oak_sr":
-        record_oak_sr(duration_seconds=args.duration, output_dir=args.output_dir)
+        mxid = args.mxid if args.mxid else default_oak_sr_mxid
+        record_oak_sr(mxid=mxid, duration_seconds=args.duration, output_dir=args.output_dir)
